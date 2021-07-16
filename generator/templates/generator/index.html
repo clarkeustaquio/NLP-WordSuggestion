@@ -1,0 +1,56 @@
+{% load bootstrap5 %}
+
+<html>
+    <head>
+        <title>Auto Suggest</title>
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+    </head>
+    <body>
+        <main>
+            <nav class="navbar navbar-light bg-light">
+                <div class="container">
+                    <a class="navbar-brand" href="#">AutoSuggest</a>
+                </div>
+            </nav>
+
+            <div class="container mt-4">
+                <form method="POST" action="{% url 'generator:index' %}">
+                    {% csrf_token %}
+                    <label for="sentence" class="form-label">Type a sentence</label>
+                    <div class="input-group">
+                        <input value="{{ value }}" name="sentence" type="text" class="form-control" id="sentence" placeholder="Enter a word" required>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="container mt-5">
+                <h3>Possible next word: {{ value }}</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Word</th>
+                        <th scope="col">Frequency Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for frequency in most_common %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ frequency.0 }}</td>
+                                <td>{{ frequency.1 }}</td>
+                            </tr>
+                        {% endfor %}
+                        
+                       
+                    </tbody>
+                </table>
+                {% if most_common|length == 0%}
+                    <h5 class="text-center"><b>No available data.<b></h5>
+                {% endif %}
+            </div>
+        </main>
+    </body>
+</html>
