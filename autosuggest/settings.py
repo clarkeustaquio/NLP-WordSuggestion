@@ -32,7 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'generator',
-
+    'word_chunk',
+    
     'bootstrap5',
     
     'django.contrib.admin',

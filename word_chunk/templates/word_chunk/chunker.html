@@ -1,0 +1,61 @@
+{% load bootstrap5 %}
+
+<html>
+    <head>
+        <title>Chunk Phrase</title>
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+    </head>
+    <body>
+        <main>
+            <nav class="navbar navbar-light bg-light">
+                <div class="container">
+                    <a class="navbar-brand" href="#">Chunk Phrase</a>
+                </div>
+            </nav>
+
+            <div class="container mt-4">
+                <h5>Noun Phrase</h5>
+                <form method="POST" action="{% url 'word_chunk:chunk' %}">
+                    {% csrf_token %}
+                    <label for="sentence" class="form-label">Type a sentence</label>
+                    <div class="input-group">
+                        <input value="{{ value }}" name="noun_phrase" tye="text" class="form-control" id="sentence" placeholder="Enter a sentence" required>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+                <h5>
+                {% for leave in noun_phrase %}
+                    {% if leave.is_phrase %}
+                        <span style="color: blue">{{ leave.character }}</span>
+                    {% else %}
+                        <span>{{ leave.character }}</span>
+                    {% endif %}
+                {% endfor %}
+                <h5>
+                <hr class="mt-5"></hr>
+            </div>
+            
+            <div class="container mt-4">
+                <h5>Verb Phrase</h5>
+                <form method="POST" action="{% url 'word_chunk:chunk' %}">
+                    {% csrf_token %}
+                    <label for="sentence" class="form-label">Type a sentence</label>
+                    <div class="input-group">
+                        <input value="{{ value }}" name="verb_phrase" type="text" class="form-control" id="sentence" placeholder="Enter a sentence" required>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+                <h5>
+                {% for leave in verb_phrase %}
+                    {% if leave.is_phrase %}
+                        <span style="color: red">{{ leave.character }}</span>
+                    {% else %}
+                        <span>{{ leave.character }}</span>
+                    {% endif %}
+                {% endfor %}
+                <h5>
+            </div>
+        </main>
+    </body>
+</html>
