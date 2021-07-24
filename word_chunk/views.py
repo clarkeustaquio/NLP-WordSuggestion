@@ -4,7 +4,6 @@ from nltk import word_tokenize, pos_tag, RegexpParser
 
 # Create your views here.
 def chunk(request):
-    leaves = list()
     noun_phrase = list()
     verb_phrase = list()
 
@@ -24,13 +23,10 @@ def chunk(request):
     if request.method == 'POST':
         for key, value in request.POST.items():
             if key == 'noun_phrase':
-                sentence = request.POST['noun_phrase']
-                tokenize = word_tokenize(sentence)
-
-                tag = pos_tag(tokenize)
                 rule = 'NP: {<DT>*<NN>*<IN><JJ>*<NNS>}'
-                chunk = RegexpParser(rule)
-                trees = chunk.parse(tag)
+                sentence = request.POST['noun_phrase']
+                tokenize, trees = _parser(sentence, rule)
+
                 noun_phrase = get_leaves(tokenize, trees)
 
                 return render(request, 'word_chunk/chunker.html', {
@@ -38,13 +34,10 @@ def chunk(request):
                 })
 
             elif key == 'verb_phrase':
-                sentence = request.POST['verb_phrase']
-                tokenize = word_tokenize(sentence)
-
-                tag = pos_tag(tokenize)
                 rule = 'VP: {<MD>?<VB>?<VBD>?<VBN>?<VBG>}'
-                chunk = RegexpParser(rule)
-                trees = chunk.parse(tag)
+                sentence = request.POST['verb_phrase']
+                tokenize, trees = _parser(sentence, rule)
+
                 verb_phrase = get_leaves(tokenize, trees)
 
                 return render(request, 'word_chunk/chunker.html', {
@@ -55,8 +48,15 @@ def chunk(request):
         'verb_phrase': verb_phrase
     })
 
-def get_leaves(tokenize, trees):
+def _parser(sentence, rule):
+    tokenize = word_tokenize(sentence)
+    tag = pos_tag(tokenize)
+    chunk = RegexpParser(rule)
+    trees = chunk.parse(tag)
 
+    return tokenize, trees
+
+def get_leaves(tokenize, trees):
     leaves = list()
     roots = list()
 
