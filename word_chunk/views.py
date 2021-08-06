@@ -43,6 +43,7 @@ def chunk(request):
                 return render(request, 'word_chunk/chunker.html', {
                     'verb_phrase': verb_phrase
                 })
+                
     return render(request, 'word_chunk/chunker.html', {
         'noun_phrase': noun_phrase,
         'verb_phrase': verb_phrase

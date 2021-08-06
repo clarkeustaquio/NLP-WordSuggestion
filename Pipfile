@@ -7,6 +7,10 @@ name = "pypi"
 nltk = "*"
 django = "*"
 django-bootstrap-v5 = "*"
+beautifulsoup4 = "*"
+requests = "*"
+lxml = "*"
+sklearn = "*"
 
 [dev-packages]
 

@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'generator',
     'word_chunk',
+    'tf_idf',
     
     'bootstrap5',
     

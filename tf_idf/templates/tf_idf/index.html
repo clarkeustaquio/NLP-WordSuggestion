@@ -1,0 +1,75 @@
+{% load bootstrap5 %}
+<html>
+    <head>
+        <title>TF-IDF</title>
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js" integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.0/dist/chart.min.js"></script>
+    
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="#">TF-IDF</a>
+            </div>
+        </nav>
+
+        <div class="container mt-5">
+            <canvas id="myChart" width="400" height="800"></canvas>
+        </div>
+
+        <div class="container mt-5 mb-5">
+            <h5>10 Live Urls</h5>
+            <ul class="list-group">
+            {% for url in urls %}
+                <li class="list-group-item"><a href={{ url }}>{{ url }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+    </body>
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+
+        var labels = JSON.parse("{{ labels }}".replace(/&quot;/g,'"'));
+        var data = JSON.parse("{{ data }}".replace(/&quot;/g,'"'));
+
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Top 10 Significant Words',
+                    data: data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+            }
+        });
+    </script>
+</html>
